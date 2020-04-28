@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp" Version="5.12.1" />
+    <PackageReference Include="SpotifyAPI.Web" Version="5.1.0" />
+    <PackageReference Include="SpotifyAPI.Web.Auth" Version="5.1.0" />
+  </ItemGroup>
+
+</Project>
