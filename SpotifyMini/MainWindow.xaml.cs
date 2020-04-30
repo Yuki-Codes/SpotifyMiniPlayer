@@ -3,6 +3,7 @@
 	using System;
 	using System.Threading.Tasks;
 	using System.Windows;
+	using System.Windows.Controls.Primitives;
 	using System.Windows.Media.Imaging;
 	using SpotifyAPI.Web;
 	using SpotifyAPI.Web.Auth;
@@ -57,10 +58,18 @@
 
 				try
 				{
+					if (token.IsExpired())
+					{
+						token = await auth.ExchangeCode(payload.Code);
+					}
+
 					PlaybackContext playing = await api.GetPlayingTrackAsync();
 
 					if (playing == null || playing.Item == null)
 						continue;
+
+					if (Application.Current == null)
+						return;
 
 					Application.Current.Dispatcher.Invoke(() =>
 					{
@@ -96,12 +105,12 @@
 
 		private void Border_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			this.Controls.Opacity = 1.0;
+			this.Controls.Animate(Window.OpacityProperty, 1.0, 250);
 		}
 
 		private void Border_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			this.Controls.Opacity = 0.0;
+			this.Controls.Animate(Window.OpacityProperty, 0.0, 250);
 		}
 
 		private void OnClose(object sender, RoutedEventArgs e)
@@ -142,6 +151,18 @@
 		private void OnPin(object sender, RoutedEventArgs e)
 		{
 			this.Topmost = !this.Topmost;
+		}
+
+		private void OnResizeDrag(object sender, DragDeltaEventArgs e)
+		{
+			double scale = this.WindowScale.ScaleX;
+
+			double delta = Math.Max(e.HorizontalChange / 1024, e.VerticalChange / 576);
+			scale += delta;
+
+			scale = Math.Clamp(scale, 0.5, 2.0);
+			this.WindowScale.ScaleX = scale;
+			this.WindowScale.ScaleY = scale;
 		}
 	}
 }

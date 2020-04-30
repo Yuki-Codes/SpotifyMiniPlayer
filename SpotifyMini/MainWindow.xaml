@@ -8,8 +8,9 @@
 		mc:Ignorable="d"
 		WindowStyle="None"
 		ResizeMode="NoResize"
+		SizeToContent="WidthAndHeight"
 		AllowsTransparency="True"
-		Title="MainWindow" Height="256" Width="256"
+		Title="MainWindow" 
 		Background="Transparent"
 		Topmost="True"
 		MouseDown="Window_MouseDown">
@@ -47,7 +48,11 @@
 			<DropShadowEffect Opacity="0.5" BlurRadius="6" ShadowDepth="0"/>
 		</Border.Effect>
 
-		<Grid>
+		<Grid Height="256" Width="256">
+			
+			<Grid.LayoutTransform>
+				<ScaleTransform x:Name="WindowScale" ScaleX="1" ScaleY="1"/>
+			</Grid.LayoutTransform>
 
 			<Ellipse StrokeThickness="72" Margin="30" Stroke="White" Opacity="0.10"/>
 
@@ -123,6 +128,8 @@
 					<TextBlock TextTrimming="CharacterEllipsis" FontSize="12" Grid.Row="1" Margin="3" x:Name="AlbumName" Text="Hello World!" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 				</Border>
 			</Border>
+
+			<Thumb Margin="0, 0, -4, -4" Width="16" Height="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" DragDelta="OnResizeDrag" Opacity="0.01"/>
 		</Grid>
 	</Border>
 
