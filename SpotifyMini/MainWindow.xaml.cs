@@ -20,14 +20,21 @@
 
 		private bool isPlaying;
 		private SpotifyWebAPI api;
+		private AuthorizationCodeAuth auth;
+
+		private Settings settings;
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
+			this.settings = Settings.Load();
+			this.WindowScale.ScaleX = this.settings.WindowScale;
+			this.WindowScale.ScaleY = this.settings.WindowScale;
+
 			this.Controls.Opacity = 0.0;
 
-			AuthorizationCodeAuth auth = new AuthorizationCodeAuth(
+			this.auth = new AuthorizationCodeAuth(
 				ClientId,
 				ClientSecret,
 				"http://localhost:4002",
@@ -45,7 +52,11 @@
 			auth.Stop();
 
 			Token token = await auth.ExchangeCode(payload.Code);
+			this.Start(token, payload.Code);
+		}
 
+		private async void Start(Token token, string code)
+		{
 			this.api = new SpotifyWebAPI
 			{
 				AccessToken = token.AccessToken,
@@ -60,7 +71,8 @@
 				{
 					if (token.IsExpired())
 					{
-						token = await auth.ExchangeCode(payload.Code);
+						token = await this.auth.RefreshToken(token.RefreshToken);
+						this.api.AccessToken = token.AccessToken;
 					}
 
 					PlaybackContext playing = await api.GetPlayingTrackAsync();
@@ -163,6 +175,9 @@
 			scale = Math.Clamp(scale, 0.5, 2.0);
 			this.WindowScale.ScaleX = scale;
 			this.WindowScale.ScaleY = scale;
+
+			this.settings.WindowScale = scale;
+			this.settings.Save();
 		}
 	}
 }
