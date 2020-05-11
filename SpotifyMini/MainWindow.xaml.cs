@@ -10,6 +10,7 @@
 	using SpotifyAPI.Web.Auth;
 	using SpotifyAPI.Web.Enums;
 	using SpotifyAPI.Web.Models;
+	using Unosquare.Swan;
 
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -207,6 +208,15 @@
 			this.WindowScale.ScaleY = scale;
 
 			this.settings.WindowScale = scale;
+			this.settings.Save();
+		}
+
+		private void Window_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+		{
+			int volume = this.settings.Volume;
+			volume += (e.Delta / 120) * 10;
+			this.api.SetVolume(volume);
+			this.settings.Volume = volume;
 			this.settings.Save();
 		}
 	}

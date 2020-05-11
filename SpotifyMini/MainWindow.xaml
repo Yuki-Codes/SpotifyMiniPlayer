@@ -14,7 +14,8 @@
 		Background="Transparent"
 		Topmost="True"
 		MouseDown="Window_MouseDown"
-		MouseUp="Window_MouseUp">
+		MouseUp="Window_MouseUp"
+		MouseWheel="Window_MouseWheel">
 
 	<Window.Resources>
 		<Style TargetType="Button" x:Key="TransparentButton">

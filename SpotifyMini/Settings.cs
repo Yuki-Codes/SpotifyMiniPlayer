@@ -14,6 +14,7 @@
 		public double WindowPositionX { get; set; } = 200;
 		public double WindowPositionY { get; set; } = 200;
 		public bool AlwaysOnTop { get; set; } = false;
+		public int Volume { get; set; } = 100;
 
 		public static Settings Load()
 		{
