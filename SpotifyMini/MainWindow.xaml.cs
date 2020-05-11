@@ -4,6 +4,7 @@
 	using System.Threading.Tasks;
 	using System.Windows;
 	using System.Windows.Controls.Primitives;
+	using System.Windows.Media;
 	using System.Windows.Media.Imaging;
 	using SpotifyAPI.Web;
 	using SpotifyAPI.Web.Auth;
@@ -64,9 +65,11 @@
 				TokenType = token.TokenType
 			};
 
+			string currentImageUrl = null;
+
 			while (true)
 			{
-				await Task.Delay(1000);
+				await Task.Delay(500);
 
 				try
 				{
@@ -84,14 +87,30 @@
 					if (Application.Current == null)
 						return;
 
-					Application.Current.Dispatcher.Invoke(() =>
+					string newImageUrl = null;
+
+					if (playing.Item.Album.Images.Count > 0)
+						newImageUrl = playing.Item.Album.Images[0].Url;
+
+					if (currentImageUrl == newImageUrl)
+						continue;
+
+					currentImageUrl = newImageUrl;
+
+					await Application.Current.Dispatcher.InvokeAsync(() =>
 					{
 						this.isPlaying = playing.IsPlaying;
 
-						if (playing.Item.Album.Images.Count > 0)
+						if (!string.IsNullOrEmpty(newImageUrl))
 						{
-							this.Background.ImageSource = new BitmapImage(new Uri(playing.Item.Album.Images[0].Url));
+							this.Background2.ImageSource = this.Background.ImageSource;
+							
+							this.Background.ImageSource = new BitmapImage(new Uri(currentImageUrl));
 							this.Background.Opacity = 1;
+							this.Background2.Opacity = 1;
+
+							this.BackgroundTransform.Animate(TranslateTransform.XProperty, 1, 0, 250);
+							this.Background2Transform.Animate(TranslateTransform.XProperty, 0, -1, 250);
 						}
 						else
 						{

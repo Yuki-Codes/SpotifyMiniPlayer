@@ -59,7 +59,21 @@
 
 			<Border CornerRadius="6">
 				<Border.Background>
-					<ImageBrush Stretch="Fill" x:Name="Background"/>
+					<ImageBrush Stretch="Fill" x:Name="Background2">
+						<ImageBrush.RelativeTransform>
+							<TranslateTransform x:Name="Background2Transform" X="-1"/>
+						</ImageBrush.RelativeTransform>
+					</ImageBrush>
+				</Border.Background>
+			</Border>
+			
+			<Border CornerRadius="6">
+				<Border.Background>
+					<ImageBrush Stretch="Fill" x:Name="Background">
+						<ImageBrush.RelativeTransform>
+							<TranslateTransform x:Name="BackgroundTransform" X="0"/>
+						</ImageBrush.RelativeTransform>
+					</ImageBrush>
 				</Border.Background>
 			</Border>
 
