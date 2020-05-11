@@ -15,7 +15,7 @@
 		Topmost="True"
 		MouseDown="Window_MouseDown"
 		MouseUp="Window_MouseUp"
-		MouseWheel="Window_MouseWheel">
+		MouseWheel="Window_MouseWheel" ShowInTaskbar="False">
 
 	<Window.Resources>
 		<Style TargetType="Button" x:Key="TransparentButton">
