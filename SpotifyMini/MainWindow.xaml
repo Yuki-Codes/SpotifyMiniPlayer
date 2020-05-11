@@ -84,7 +84,10 @@
 						</Grid.RowDefinitions>
 
 						<Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnPin" Style="{StaticResource TransparentButton}">
-							<fa:IconImage Grid.Column="0" Icon="Thumbtack" Foreground="White" Width="22" Height="20" Margin="0, 2, 0, 0"/>
+							<Grid>
+								<Ellipse Stroke="White" x:Name="PinOn"/>
+								<fa:IconImage Grid.Column="0" Icon="Thumbtack" Foreground="White" Width="22" Height="20" Margin="0, 2, 0, 0"/>
+							</Grid>
 						</Button>
 
 						<Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Click="OnClose" Style="{StaticResource TransparentButton}">

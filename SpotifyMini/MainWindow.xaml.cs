@@ -30,8 +30,10 @@
 			this.WindowScale.ScaleY = this.settings.WindowScale;
 			this.Left = this.settings.WindowPositionX;
 			this.Top = this.settings.WindowPositionY;
+			this.Topmost = this.settings.AlwaysOnTop;
 
 			this.Controls.Opacity = 0.0;
+			this.PinOn.Visibility = this.Topmost ? Visibility.Visible : Visibility.Collapsed;
 
 			this.auth = new AuthorizationCodeAuth(
 				Keys.ClientId,
@@ -169,6 +171,9 @@
 		private void OnPin(object sender, RoutedEventArgs e)
 		{
 			this.Topmost = !this.Topmost;
+			this.PinOn.Visibility = this.Topmost ? Visibility.Visible : Visibility.Collapsed;
+			this.settings.AlwaysOnTop = this.Topmost;
+			this.settings.Save();
 		}
 
 		private void OnResizeDrag(object sender, DragDeltaEventArgs e)
