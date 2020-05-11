@@ -1,15 +1,18 @@
-﻿using System;
-using System.IO;
-using System.Text.Json;
-
-namespace SpotifyMini
+﻿namespace SpotifyMini
 {
+	using System;
+	using System.Drawing;
+	using System.IO;
+	using System.Text.Json;
+
 	[Serializable]
 	public class Settings
 	{
 		private const string path = "settings.json";
 
 		public double WindowScale { get; set; } = 1.0;
+		public double WindowPositionX { get; set; } = 200;
+		public double WindowPositionY { get; set; } = 200;
 
 		public static Settings Load()
 		{

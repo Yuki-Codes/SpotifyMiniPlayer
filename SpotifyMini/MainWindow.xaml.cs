@@ -15,14 +15,11 @@
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public const string ClientId = null;
-		public const string ClientSecret = null;
+		private readonly AuthorizationCodeAuth auth;
+		private readonly Settings settings;
 
 		private bool isPlaying;
 		private SpotifyWebAPI api;
-		private AuthorizationCodeAuth auth;
-
-		private Settings settings;
 
 		public MainWindow()
 		{
@@ -31,12 +28,14 @@
 			this.settings = Settings.Load();
 			this.WindowScale.ScaleX = this.settings.WindowScale;
 			this.WindowScale.ScaleY = this.settings.WindowScale;
+			this.Left = this.settings.WindowPositionX;
+			this.Top = this.settings.WindowPositionY;
 
 			this.Controls.Opacity = 0.0;
 
 			this.auth = new AuthorizationCodeAuth(
-				ClientId,
-				ClientSecret,
+				Keys.ClientId,
+				Keys.ClientSecret,
 				"http://localhost:4002",
 				"http://localhost:4002",
 				Scope.UserReadPlaybackState | Scope.UserModifyPlaybackState | Scope.UserReadCurrentlyPlaying);
@@ -52,10 +51,10 @@
 			auth.Stop();
 
 			Token token = await auth.ExchangeCode(payload.Code);
-			this.Start(token, payload.Code);
+			this.Start(token);
 		}
 
-		private async void Start(Token token, string code)
+		private async void Start(Token token)
 		{
 			this.api = new SpotifyWebAPI
 			{
@@ -113,6 +112,13 @@
 		private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			this.DragMove();
+		}
+
+		private void Window_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			this.settings.WindowPositionX = this.Left;
+			this.settings.WindowPositionY = this.Top;
+			this.settings.Save();
 		}
 
 		private void Border_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

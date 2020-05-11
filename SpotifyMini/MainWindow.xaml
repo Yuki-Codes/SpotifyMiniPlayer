@@ -13,7 +13,8 @@
 		Title="MainWindow" 
 		Background="Transparent"
 		Topmost="True"
-		MouseDown="Window_MouseDown">
+		MouseDown="Window_MouseDown"
+		MouseUp="Window_MouseUp">
 
 	<Window.Resources>
 		<Style TargetType="Button" x:Key="TransparentButton">
