@@ -67,6 +67,7 @@
 			};
 
 			string currentImageUrl = null;
+			string refreshToken = token.RefreshToken;
 
 			while (true)
 			{
@@ -76,7 +77,7 @@
 				{
 					if (token.IsExpired())
 					{
-						token = await this.auth.RefreshToken(token.RefreshToken);
+						token = await this.auth.RefreshToken(refreshToken);
 						this.api.AccessToken = token.AccessToken;
 					}
 
@@ -93,29 +94,29 @@
 					if (playing.Item.Album.Images.Count > 0)
 						newImageUrl = playing.Item.Album.Images[0].Url;
 
-					if (currentImageUrl == newImageUrl)
-						continue;
-
-					currentImageUrl = newImageUrl;
-
 					await Application.Current.Dispatcher.InvokeAsync(() =>
 					{
 						this.isPlaying = playing.IsPlaying;
 
-						if (!string.IsNullOrEmpty(newImageUrl))
+						if (currentImageUrl != newImageUrl)
 						{
-							this.Background2.ImageSource = this.Background.ImageSource;
-							
-							this.Background.ImageSource = new BitmapImage(new Uri(currentImageUrl));
-							this.Background.Opacity = 1;
-							this.Background2.Opacity = 1;
+							currentImageUrl = newImageUrl;
 
-							this.BackgroundTransform.Animate(TranslateTransform.XProperty, 1, 0, 250);
-							this.Background2Transform.Animate(TranslateTransform.XProperty, 0, -1, 250);
-						}
-						else
-						{
-							this.Background.Opacity = 0;
+							if (!string.IsNullOrEmpty(newImageUrl))
+							{
+								this.Background2.ImageSource = this.Background.ImageSource;
+
+								this.Background.ImageSource = new BitmapImage(new Uri(currentImageUrl));
+								this.Background.Opacity = 1;
+								this.Background2.Opacity = 1;
+
+								this.BackgroundTransform.Animate(TranslateTransform.XProperty, 1, 0, 250);
+								this.Background2Transform.Animate(TranslateTransform.XProperty, 0, -1, 250);
+							}
+							else
+							{
+								this.Background.Opacity = 0;
+							}
 						}
 
 						this.AlbumName.Text = playing.Item.Name + " - " + playing.Item.Album.Name;
